@@ -46,10 +46,12 @@ const Categories = {
     this.body = this.category.serialize();
   },
 
-  *category(name, next) {
-    const { namespace } = this.params.all();
-    this.category = yield categoryStore.findOne(
-      Object.assign({ name }, params));
+  *category(next) {
+    const { namespace, category_name } = this.params.all();
+    this.category = yield categoryStore.findOne({
+      namespace,
+      name: category_name,
+    });
 
     yield next;
   },
@@ -104,10 +106,12 @@ const Categories = {
       this.body = entities.map(entity => entity.serialize());
     },
 
-    *entity(_id, next) {
+    *entity(next) {
+      const { entity_id, category_name } = this.params.all();
+
       this.entity = yield entityStore.findOne({
-        category_name: this.category.name,
-        _id
+        category_name,
+        _id: entity_id,
       });
       this.entity.category = this.category;
 
@@ -137,19 +141,19 @@ nsRouter.get('/', ok);
 nsRouter.use('/namespaces/:namespace', ...(() => {
   const router = new Router();
 
-  router.param('category', Categories.category);
-  router.param('entity', Categories.Entities.entity);
+  router.use('/categories/:category_name', Categories.category);
+  router.use('/categories/:category_name/entities/:entity_id', Categories.Entities.entity);
 
   router.get('/categories/', Categories.index);
   router.post('/categories/', Categories.create);
-  router.get('/categories/:category', Categories.show);
+  router.get('/categories/:category_name', Categories.show);
 
-  router.get('/categories/:category/entities/', Categories.Entities.index);
-  router.get('/categories/:category/entities/new', Categories.Entities.new);
-  router.post('/categories/:category/entities/', Categories.Entities.create);
-  router.post('/categories/:category/entities/bulk', Categories.Entities.bulk);
-  router.get('/categories/:category_name/entities/:entity', Categories.Entities.show);
-  router.put('/categories/:category_name/entities/:entity', Categories.Entities.update);
+  router.get('/categories/:category_name/entities/', Categories.Entities.index);
+  router.get('/categories/:category_name/entities/new', Categories.Entities.new);
+  router.post('/categories/:category_name/entities/', Categories.Entities.create);
+  router.post('/categories/:category_name/entities/bulk', Categories.Entities.bulk);
+  router.get('/categories/:category_name/entities/:entity_id', Categories.Entities.show);
+  router.put('/categories/:category_name/entities/:entity_id', Categories.Entities.update);
 
   return [router.routes(), router.allowedMethods()];
 })());
