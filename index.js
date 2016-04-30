@@ -72,7 +72,10 @@ const Categories = {
       this.body = entity;
     },
     *create() {
-      const entity = entityStore.deserialize(this.params.except('_id'));
+      const params = this.params.only('_version', 'document');
+      const entity = entityStore.deserialize(Object.assign({}, {
+        metadata: {},
+      }, params));
       entity.category = this.category;
       entity.normalize();
 

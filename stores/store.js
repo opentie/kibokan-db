@@ -10,7 +10,7 @@ class Store {
 
   get db() {
     const db = this.constructor.db;
-    assert(db !== null);
+    assert(db !== null, 'missing connection to mongodb');
     return db;
   }
 
