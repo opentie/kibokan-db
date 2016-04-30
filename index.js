@@ -46,8 +46,8 @@ const Categories = {
     this.body = this.category.serialize();
   },
 
-  *category(next) {
-    const { namespace, category_name } = this.params.all();
+  *category(category_name, next) {
+    const { namespace } = this.params.all();
     this.category = yield categoryStore.findOne({
       namespace,
       name: category_name,
@@ -98,7 +98,7 @@ const Categories = {
       const params = this.params.only('ids');
       const ids = params.ids.map(ObjectID);
 
-      const entities = entityStore.find({
+      const entities = yield entityStore.find({
         category_name: this.category.name,
         _id: { $in: ids },
       });
@@ -106,8 +106,8 @@ const Categories = {
       this.body = entities.map(entity => entity.serialize());
     },
 
-    *entity(next) {
-      const { entity_id, category_name } = this.params.all();
+    *entity(entity_id, next) {
+      const { category_name } = this.params.all();
 
       this.entity = yield entityStore.findOne({
         category_name,
@@ -141,8 +141,8 @@ nsRouter.get('/', ok);
 nsRouter.use('/namespaces/:namespace', ...(() => {
   const router = new Router();
 
-  router.use('/categories/:category_name', Categories.category);
-  router.use('/categories/:category_name/entities/:entity_id', Categories.Entities.entity);
+  router.param('entity_id', Categories.Entities.entity);
+  router.param('category_name', Categories.category);
 
   router.get('/categories/', Categories.index);
   router.post('/categories/', Categories.create);

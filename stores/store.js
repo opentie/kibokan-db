@@ -24,7 +24,8 @@ class Store {
 
   _normalizeQuery(query) {
     for (const key of Object.keys(query)) {
-      if (key === '_id') {
+      if (typeof query[key] === 'string' && key === '_id') {
+        console.log(query, key);
         query._id = ObjectID(query._id);
       }
     }
