@@ -96,6 +96,7 @@ const MONGODB_URL = process.env.MONGODB_URL ||
 
 function tryToConnect() {
   MongoClient.connect(MONGODB_URL).then((db) => {
+    console.error(db);
     Store.db = db;
   }).catch(err => {
     console.error(err);
