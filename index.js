@@ -47,7 +47,7 @@ const Categories = {
   },
 
   *category(name, next) {
-    const params = this.params.only('namespace');
+    const { namespace } = this.params.all();
     this.category = yield categoryStore.findOne(
       Object.assign({ name }, params));
 
@@ -75,7 +75,8 @@ const Categories = {
       const params = this.params.only('_version', 'document');
       const entity = entityStore.deserialize(Object.assign({}, {
         metadata: {},
-      }, params));
+        category_name: this.category.name,
+      }, params), true);
       entity.category = this.category;
       entity.normalize();
 
