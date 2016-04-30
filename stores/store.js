@@ -94,8 +94,14 @@ Store.db = null;
 const MONGODB_URL = process.env.MONGODB_URL ||
         'mongodb://localhost:27017/kibokan_test';
 
-MongoClient.connect(MONGODB_URL).then((db) => {
-  Store.db = db;
-});
+function tryToConnect() {
+  MongoClient.connect(MONGODB_URL).then((db) => {
+    Store.db = db;
+  }).catch(err => {
+    setTimeout(tryToConnect, 1000);
+  });
+}
+
+tryToConnect();
 
 module.exports = Store;
