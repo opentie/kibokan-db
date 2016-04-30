@@ -98,6 +98,7 @@ function tryToConnect() {
   MongoClient.connect(MONGODB_URL).then((db) => {
     Store.db = db;
   }).catch(err => {
+    console.error(err);
     setTimeout(tryToConnect, 1000);
   });
 }
