@@ -3,7 +3,7 @@ FROM node:6
 RUN mkdir /app
 ADD . /app
 WORKDIR /app
-RUN npm install
+RUN npm install --no-dev
 
 EXPOSE 8124
 
