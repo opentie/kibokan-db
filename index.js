@@ -162,4 +162,11 @@ qs(app);
 app.use(logger());
 app.use(bodyparser());
 app.use(nsRouter.routes());
-app.listen(8124);
+
+const server = app.listen(8124);
+
+process.on('SIGTERM', () => {
+  server.close(() => {
+    Store.close();
+  });
+});

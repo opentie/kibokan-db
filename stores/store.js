@@ -88,6 +88,14 @@ class Store {
 
   createIndex() {
   }
+
+  static close() {
+    if (this.db) {
+      return this.db.close();
+    }
+
+    return Promise.resolve(null);
+  }
 }
 Store.db = null;
 
