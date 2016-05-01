@@ -85,7 +85,7 @@ const Categories = {
       this.body = yield entityStore.save(entity);
     },
     *show() {
-      this.body = this.entity.serialize();
+      this.body = this.entity.serialize({ category: {} });
     },
     *update() {
       const params = this.params.only('_version', 'document');
