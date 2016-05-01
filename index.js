@@ -32,7 +32,7 @@ const Categories = {
       namespace,
       name: '',
       forms: [],
-    });
+    }).serialize({}, true);
 
     this.body = category;
   },
@@ -69,7 +69,7 @@ const Categories = {
         document: {},
       }).serialize({
         category: {}
-      });
+      }, true);
 
       this.body = entity;
     },
@@ -104,6 +104,8 @@ const Categories = {
         _id: { $in: ids },
       });
 
+      console.log(entities);
+
       this.body = entities.map(entity => entity.serialize());
     },
 
@@ -136,6 +138,7 @@ if (process.env.NODE_ENV !== 'production') {
   nsRouter.use(function *(next) {
     console.log('PARAMETERS', this.params.all());
     yield next;
+    console.log('RESPONCE', this.body);
   });
 }
 

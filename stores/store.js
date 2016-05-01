@@ -37,7 +37,7 @@ class Store {
     query = this._normalizeQuery(query);
 
     return this.collection.find(query).toArray().then(docs => {
-      return docs.map(this.deserialize);
+      return docs.map(doc => this.deserialize(doc));
     });
   }
 
