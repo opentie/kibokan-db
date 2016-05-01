@@ -13,6 +13,12 @@ class CategoryStore extends Store {
   createIndex() {
     this.collection.createIndex({ namespace: 1, name: 1 }, { unique: true });
   }
+
+  getCounter(name) {
+    return this.collection.findOneAndUpdate({ name }, {
+      $inc: { autoincrement: 1 },
+    }, { returnOriginal: false }).then(({ value }) => value.autoincrement);
+  }
 }
 
 const categoryStore = new CategoryStore();

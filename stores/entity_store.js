@@ -12,6 +12,10 @@ class EntityStore extends Store {
     this.collectionName = 'entities';
     this.Serializable = Entity;
   }
+
+  createIndex() {
+    this.collection.createIndex({ number: 1 }, { unique: true });
+  }
 }
 
 const entityStore = new EntityStore();

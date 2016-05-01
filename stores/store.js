@@ -18,8 +18,8 @@ class Store {
     return this.db.collection(this.collectionName);
   }
 
-  deserialize(doc) {
-    return new this.Serializable().deserialize(doc);
+  deserialize(doc, isPartial) {
+    return new this.Serializable().deserialize(doc, isPartial);
   }
 
   _normalizeQuery(query) {

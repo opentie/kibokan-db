@@ -37,7 +37,7 @@ const Categories = {
     this.body = category;
   },
   *create() {
-    const params = this.params.only('_version', 'metadata', 'namespace', 'name', 'forms');
+    const params = this.params.only('_version', 'metadata', 'namespace', 'name', 'forms', 'autoincrement');
 
     const category = categoryStore.deserialize(params);
     this.body = yield categoryStore.insert(category);
@@ -81,6 +81,7 @@ const Categories = {
       }, params), true);
       entity.category = this.category;
       entity.normalize();
+      entity.number = yield categoryStore.getCounter(this.category.name);
 
       this.body = yield entityStore.save(entity);
     },
@@ -123,6 +124,7 @@ const Categories = {
 function *ok() {
   this.body = "it's ok";
   categoryStore.createIndex();
+  entityStore.createIndex();
 }
 
 nsRouter.use(function *(next) {
