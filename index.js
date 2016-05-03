@@ -45,6 +45,12 @@ const Categories = {
   *show() {
     this.body = this.category.serialize();
   },
+  *update() {
+    const params = this.params.only('_version', 'metadata', 'forms');
+    this.category.deserialize(params, true);
+
+    this.body = (yield categoryStore.update(this.category)).serialize();
+  },
 
   *category(category_name, next) {
     const { namespace } = this.params.all();
@@ -152,6 +158,7 @@ nsRouter.use('/namespaces/:namespace', ...(() => {
   router.get('/categories/', Categories.index);
   router.post('/categories/', Categories.create);
   router.get('/categories/:category_name', Categories.show);
+  router.put('/categories/:category_name', Categories.update);
 
   router.get('/categories/:category_name/entities/', Categories.Entities.index);
   router.get('/categories/:category_name/entities/new', Categories.Entities.new);
