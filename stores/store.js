@@ -97,22 +97,25 @@ class Store {
 
     return Promise.resolve(null);
   }
+
+  static connect() {
+    return MongoClient.connect(MONGODB_URL).then((db) => {
+      console.error('CONNECTED TO MONGODB');
+      Store.db = db;
+      return db;
+    }).catch(err => {
+      console.error(err);
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          this.connect.bind(this).then(resolve, reject);
+        }, 1000);
+      });
+    });
+  }
 }
 Store.db = null;
 
 const MONGODB_URL = process.env.MONGODB_URL ||
         'mongodb://localhost:27017/kibokan_test';
-
-function tryToConnect() {
-  MongoClient.connect(MONGODB_URL).then((db) => {
-    console.error(db);
-    Store.db = db;
-  }).catch(err => {
-    console.error(err);
-    setTimeout(tryToConnect, 1000);
-  });
-}
-
-tryToConnect();
 
 module.exports = Store;

@@ -175,6 +175,10 @@ app.use(logger());
 app.use(bodyparser());
 app.use(nsRouter.routes());
 
+Store.connect().then(() => {
+  categoryStore.createIndex();
+  entityStore.createIndex();
+});
 const server = app.listen(8124);
 
 process.on('SIGTERM', () => {

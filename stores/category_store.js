@@ -11,6 +11,7 @@ class CategoryStore extends Store {
   }
 
   createIndex() {
+    this.collection.createIndex({ name: 1 }, { unique: true });
     this.collection.createIndex({ namespace: 1, name: 1 }, { unique: true });
   }
 
