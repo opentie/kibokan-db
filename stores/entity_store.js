@@ -14,7 +14,7 @@ class EntityStore extends Store {
   }
 
   createIndex() {
-    this.collection.createIndex({ number: 1 }, { unique: true });
+    this.collection.createIndex({ number: 1, category_name: 1 }, { unique: true });
   }
 }
 
