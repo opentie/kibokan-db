@@ -111,7 +111,7 @@ const Categories = {
       });
 
       const entitiesMap = new Map(entities.map(entity => {
-        return [ entity._id, entity ];
+        return [ entity._id.toString(), entity ];
       }));
 
       this.body = ids.map(id => {
