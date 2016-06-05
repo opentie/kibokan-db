@@ -116,12 +116,15 @@ const Categories = {
         return [ entity._id.toString(), entity ];
       }));
 
+      console.log(entitiesMap);
+
       this.body = ids.map(id => {
-        if (!entitiesMap.has(id)) {
+        const idStr = id.toString();
+        if (!entitiesMap.has(idStr)) {
           return null;
         }
 
-        return entitiesMap.get(id).serialize();
+        return entitiesMap.get(idStr).serialize();
       });
     },
 
