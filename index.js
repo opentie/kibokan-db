@@ -110,9 +110,17 @@ const Categories = {
         _id: { $in: ids },
       });
 
-      console.log(entities);
+      const entitiesMap = new Map(entities.map(entity => {
+        return [ entity._id, entity ];
+      }));
 
-      this.body = entities.map(entity => entity.serialize());
+      this.body = ids.map(id => {
+        if (!entitiesMap.has(id)) {
+          return null;
+        }
+
+        return entitiesMap.get(id).serialize();
+      });
     },
 
     *entity(entity_id, next) {
