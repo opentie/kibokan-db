@@ -64,9 +64,11 @@ const Categories = {
 
   Entities: {
     *index() {
-      this.body = yield entityStore.find({
+      const entities = yield entityStore.find({
         category_name: this.category.name
       });
+
+      this.body = entities.map((entity) => entity.serialize());
     },
     *new() {
       const entity = entityStore.build({
