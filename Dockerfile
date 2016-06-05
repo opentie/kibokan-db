@@ -1,10 +1,10 @@
 FROM node:6
 
 RUN mkdir /app
+WORKDIR /app
 ADD package.json /app/package.json
 RUN npm install --no-dev
 ADD . /app
-WORKDIR /app
 
 EXPOSE 8124
 
